@@ -1,0 +1,59 @@
+require 'chef/knife/profitbricks_base'
+
+class Chef
+  class Knife
+    class ProfitbricksFirewallList < Knife
+      include Knife::ProfitbricksBase
+
+      banner 'knife profitbricks firewall list (options)'
+
+      option :datacenter_id,
+             short: '-D DATACENTER_UUID',
+             long: '--datacenter-id DATACENTER_UUID',
+             description: 'UUID of the data center',
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
+
+      option :server_id,
+             short: '-S SERVER_UUID',
+             long: '--server-id SERVER_UUID',
+             description: 'The UUID of the server'
+
+      option :nic_id,
+             short: '-N NIC_UUID',
+             long: '--nic-id NIC_UUID',
+             description: 'UUID of the NIC'
+
+      def run
+        $stdout.sync = true
+        firewall_list = [
+          ui.color('ID', :bold),
+          ui.color('Name', :bold),
+          ui.color('Protocol', :bold),
+          ui.color('Source MAC', :bold),
+          ui.color('Source IP', :bold),
+          ui.color('Target IP', :bold),
+          ui.color('Port Range Start', :bold),
+          ui.color('Port Range End', :bold),
+          ui.color('ICMP Type', :bold),
+          ui.color('ICMP CODE', :bold)
+        ]
+        connection
+
+        ProfitBricks::Firewall.list(config[:datacenter_id], config[:server_id], config[:nic_id]).each do |firewall|
+          firewall_list << firewall.id
+          firewall_list << firewall.properties['name']
+          firewall_list << firewall.properties['protocol'].to_s
+          firewall_list << firewall.properties['sourceMac'].to_s
+          firewall_list << firewall.properties['sourceIp'].to_s
+          firewall_list << firewall.properties['targetIp'].to_s
+          firewall_list << firewall.properties['portRangeStart'].to_s
+          firewall_list << firewall.properties['portRangeEnd'].to_s
+          firewall_list << firewall.properties['icmpType'].to_s
+          firewall_list << firewall.properties['icmpCode'].to_s
+        end
+
+        puts ui.list(firewall_list, :columns_across, 10)
+      end
+    end
+  end
+end
