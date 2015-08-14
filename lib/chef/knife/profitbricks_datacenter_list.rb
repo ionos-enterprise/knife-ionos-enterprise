@@ -25,7 +25,7 @@ class Chef
           datacenter_list << datacenter.properties['version'].to_s
         end
 
-        puts ui.list(datacenter_list, :columns_across, 5)
+        puts ui.list(datacenter_list, :uneven_columns_across, 5)
       end
     end
   end

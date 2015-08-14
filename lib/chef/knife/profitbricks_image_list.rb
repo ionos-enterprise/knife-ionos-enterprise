@@ -28,7 +28,7 @@ class Chef
           image_list << image.properties['public'].to_s
         end
 
-        puts ui.list(image_list, :columns_across, 6)
+        puts ui.list(image_list, :uneven_columns_across, 6)
       end
     end
   end
