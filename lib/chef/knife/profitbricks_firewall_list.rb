@@ -52,7 +52,7 @@ class Chef
           firewall_list << firewall.properties['icmpCode'].to_s
         end
 
-        puts ui.list(firewall_list, :columns_across, 10)
+        puts ui.list(firewall_list, :uneven_columns_across, 10)
       end
     end
   end

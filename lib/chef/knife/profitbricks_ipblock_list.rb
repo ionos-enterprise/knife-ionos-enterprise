@@ -22,7 +22,7 @@ class Chef
           ipblock_list << ipblock.properties['ips'].join(", ").to_s
         end
 
-        puts ui.list(ipblock_list, :columns_across, 3)
+        puts ui.list(ipblock_list, :uneven_columns_across, 3)
       end
     end
   end

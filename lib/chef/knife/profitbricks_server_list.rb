@@ -23,7 +23,7 @@ class Chef
           ui.color('Availability Zone', :bold),
           ui.color('VM State', :bold),
           ui.color('Boot Volume', :bold),
-          ui.color('Boot CDROM', :bold),
+          ui.color('Boot CDROM', :bold)
         ]
         connection
 
@@ -34,11 +34,11 @@ class Chef
           server_list << server.properties['ram'].to_s
           server_list << server.properties['availabilityZone']
           server_list << server.properties['vmState']
-          server_list << (server.properties['bootVolume'] == nil ? '' : server.properties['bootVolume'])
-          server_list << (server.properties['bootCdrom'] == nil ? '' : server.properties['bootCdrom'])
+          server_list << (server.properties['bootVolume'] == nil ? '' : server.properties['bootVolume']['id'])
+          server_list << (server.properties['bootCdrom'] == nil ? '' : server.properties['bootCdrom']['id'])
         end
 
-        puts ui.list(server_list, :columns_across, 8)
+        puts ui.list(server_list, :uneven_columns_across, 8)
       end
     end
   end

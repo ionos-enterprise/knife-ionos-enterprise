@@ -28,7 +28,7 @@ class Chef
           lan_list << lan.properties['public'].to_s
         end
 
-        puts ui.list(lan_list, :columns_across, 3)
+        puts ui.list(lan_list, :uneven_columns_across, 3)
       end
     end
   end
