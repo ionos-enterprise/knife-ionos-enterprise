@@ -37,7 +37,7 @@ class Chef
           nic_list << nic.properties['lan'].to_s
         end
 
-        puts ui.list(nic_list, :columns_across, 5)
+        puts ui.list(nic_list, :uneven_columns_across, 5)
       end
     end
   end

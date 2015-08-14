@@ -38,7 +38,7 @@ class Chef
           server_list << (server.properties['bootCdrom'] == nil ? '' : server.properties['bootCdrom'])
         end
 
-        puts ui.list(server_list, :columns_across, 8)
+        puts ui.list(server_list, :uneven_columns_across, 8)
       end
     end
   end
