@@ -19,7 +19,7 @@ class Chef
           location_list << location.properties['name']
         end
 
-        puts ui.list(location_list, :columns_across, 2)
+        puts ui.list(location_list, :uneven_columns_across, 2)
       end
     end
   end
