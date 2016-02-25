@@ -11,7 +11,8 @@ class Chef
              short: '-D DATACENTER_UUID',
              long: '--datacenter-id DATACENTER_UUID',
              description: 'The UUID of the datacenter containing the server',
-             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
+             required: true 
 
       def run
         $stdout.sync = true
