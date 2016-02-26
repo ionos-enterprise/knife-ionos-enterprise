@@ -33,7 +33,8 @@ class Chef
              long: '--protocol PROTOCOL',
              default: 'TCP',
              description: 'The protocol of the firewall rule (TCP, UDP, ICMP,' \
-                          ' ANY)'
+                          ' ANY)',
+              required: true
 
       option :sourcemac,
              short: '-m MAC',

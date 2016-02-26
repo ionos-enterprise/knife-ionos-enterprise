@@ -10,7 +10,8 @@ class Chef
       option :name,
              short: '-n NAME',
              long: '--name NAME',
-             description: 'Name of the data center'
+             description: 'Name of the data center',
+             required: true
 
       option :description,
              short: '-D DESCRIPTION',
@@ -21,7 +22,8 @@ class Chef
              short: '-l LOCATION',
              long: '--location LOCATION',
              description: 'Location of the data center',
-             proc: proc { |location| Chef::Config[:knife][:location] = location }
+             proc: proc { |location| Chef::Config[:knife][:location] = location },
+             required: true
 
       def run
         $stdout.sync = true

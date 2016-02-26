@@ -10,12 +10,14 @@ class Chef
       option :location,
              short: '-l LOCATION',
              long: '--location LOCATION',
-             description: 'Location of the IP block (us/las, de/fra, de/fkb)'
+             description: 'Location of the IP block (us/las, de/fra, de/fkb)',
+             required: true
 
       option :size,
              short: '-S INT',
              long: '--size INT',
-             description: 'The number of IP addresses to reserve'
+             description: 'The number of IP addresses to reserve',
+             required: true
 
       def run
         $stdout.sync = true

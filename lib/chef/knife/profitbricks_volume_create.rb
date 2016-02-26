@@ -11,7 +11,8 @@ class Chef
              short: '-D DATACENTER_UUID',
              long: '--datacenter-id DATACENTER_UUID',
              description: 'Name of the data center',
-             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
+             required: true
 
       option :name,
              short: '-n NAME',
@@ -21,7 +22,8 @@ class Chef
       option :size,
              short: '-S SIZE',
              long: '--size SIZE',
-             description: 'The size of the volume in GB'
+             description: 'The size of the volume in GB',
+             required: true
 
       option :bus,
              short: '-b BUS',
@@ -36,12 +38,19 @@ class Chef
       option :type,
              short: '-t TYPE',
              long: '--type TYPE',
-             description: 'The disk type; currently only HDD.'
+             description: 'The disk type; currently only HDD.',
+             required: true
 
       option :licencetype,
              short: '-l LICENCE',
              long: '--licence-type LICENCE',
              description: 'The licence type of the volume (LINUX, WINDOWS, UNKNOWN, OTHER)'
+
+      option :sshkeys, 
+             short: '-s SSHKEY1,SSHKEY2,...',
+             long: '--ssh-keys SSHKEY1,SSHKEY2,...',
+             description: 'A list of public SSH keys to include',
+             proc: proc { |sshkeys| sshkeys.split(',') }
 
       def run
         $stdout.sync = true
@@ -54,7 +63,8 @@ class Chef
           bus: config[:bus] || 'VIRTIO',
           image: config[:image],
           type: config[:type],
-          licenceType: config[:licencetype]
+          licenceType: config[:licencetype],
+          sshKeys: config[:sshkeys]
         }
 
         connection
@@ -64,7 +74,7 @@ class Chef
         )
 
         dot = ui.color('.', :magenta)
-        volume.wait_for { print dot; ready? }
+        volume.wait_for(300) { print dot; ready? }
         volume.reload
 
         puts "\n"

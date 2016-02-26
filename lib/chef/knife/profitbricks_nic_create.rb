@@ -11,12 +11,14 @@ class Chef
              short: '-D DATACENTER_UUID',
              long: '--datacenter-id DATACENTER_UUID',
              description: 'Name of the data center',
-             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
+             required: true
 
       option :server_id,
              short: '-S SERVER_UUID',
              long: '--server-id SERVER_UUID',
-             description: 'Name of the server'
+             description: 'Name of the server',
+             required: true
 
       option :name,
              short: '-n NAME',
@@ -39,7 +41,8 @@ class Chef
       option :lan,
              short: '-l ID',
              long: '--lan ID',
-             description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created'
+             description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created',
+             required: true
 
       def run
         $stdout.sync = true

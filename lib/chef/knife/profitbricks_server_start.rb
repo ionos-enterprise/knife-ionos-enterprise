@@ -11,7 +11,8 @@ class Chef
              short: '-D DATACENTER_UUID',
              long: '--datacenter-id DATACENTER_UUID',
              description: 'UUID of the data center',
-             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
+             required: true
 
       def run
         connection

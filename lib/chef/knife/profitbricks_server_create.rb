@@ -11,22 +11,26 @@ class Chef
              short: '-D DATACENTER_UUID',
              long: '--datacenter-id DATACENTER_UUID',
              description: 'Name of the virtual datacenter',
-             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
+             required: true
 
       option :name,
              short: '-n NAME',
              long: '--name NAME',
-             description: 'Name of the server'
+             description: 'Name of the server',
+             required: true
 
       option :cores,
              short: '-C CORES',
              long: '--cores CORES',
-             description: 'The number of processor cores'
+             description: 'The number of processor cores',
+             required: true
 
       option :ram,
              short: '-r RAM',
              long: '--ram RAM',
-             description: 'The amount of RAM in MB'
+             description: 'The amount of RAM in MB',
+             required: true
 
       option :availabilityzone,
              short: '-a AVAILABILITY_ZONE',
