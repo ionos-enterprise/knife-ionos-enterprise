@@ -11,17 +11,20 @@ class Chef
              short: '-D DATACENTER_UUID',
              long: '--datacenter-id DATACENTER_UUID',
              description: 'UUID of the data center',
-             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
+             required: true
 
       option :server_id,
              short: '-S SERVER_UUID',
              long: '--server-id SERVER_UUID',
-             description: 'The UUID of the server'
+             description: 'The UUID of the server',
+             required: true
 
       option :nic_id,
              short: '-N NIC_UUID',
              long: '--nic-id NIC_UUID',
-             description: 'UUID of the NIC'
+             description: 'UUID of the NIC',
+             required: true
 
       def run
         $stdout.sync = true
