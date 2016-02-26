@@ -47,9 +47,9 @@ class Chef
              description: 'The licence type of the volume (LINUX, WINDOWS, UNKNOWN, OTHER)'
 
       option :sshkeys, 
-             short: '-s SSHKEYS',
-             long: '--ssh-keys SSHKEYS',
-             description: 'SSHKEYS',
+             short: '-s SSHKEY1,SSHKEY2,...',
+             long: '--ssh-keys SSHKEY1,SSHKEY2,...',
+             description: 'A list of public SSH keys to include',
              proc: proc { |sshkeys| sshkeys.split(',') }
 
       def run
@@ -64,7 +64,7 @@ class Chef
           image: config[:image],
           type: config[:type],
           licenceType: config[:licencetype],
-          sshkeys: config[:sshkeys]
+          sshKeys: config[:sshkeys]
         }
 
         connection
@@ -74,7 +74,7 @@ class Chef
         )
 
         dot = ui.color('.', :magenta)
-        volume.wait_for { print dot; ready? }
+        volume.wait_for(300) { print dot; ready? }
         volume.reload
 
         puts "\n"
