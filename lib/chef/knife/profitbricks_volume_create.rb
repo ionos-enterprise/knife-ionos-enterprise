@@ -47,7 +47,7 @@ class Chef
              description: 'The licence type of the volume (LINUX, WINDOWS, UNKNOWN, OTHER)'
 
       option :sshkeys, 
-             short: '-s SSHKEY1,SSHKEY2,...',
+             short: '-K SSHKEY[,SSHKEY,...]',
              long: '--ssh-keys SSHKEY1,SSHKEY2,...',
              description: 'A list of public SSH keys to include',
              proc: proc { |sshkeys| sshkeys.split(',') }
