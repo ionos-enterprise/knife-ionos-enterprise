@@ -8,8 +8,8 @@ class Chef
       banner 'knife profitbricks composite server create (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
              description: 'Name of the virtual datacenter',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true
@@ -25,6 +25,12 @@ class Chef
              long: '--cores CORES',
              description: 'The number of processor cores',
              required: true
+
+      option :cpufamily,
+             short: '-f CPU_FAMILY',
+             long: '--cpu-family CPU_FAMILY',
+             description: 'The family of processor cores (INTEL_XEON or AMD_OPTERON)',
+             default: 'AMD_OPTERON'
 
       option :ram,
              short: '-r RAM',
@@ -54,20 +60,25 @@ class Chef
              description: 'The bus type of the volume (VIRTIO or IDE)'
 
       option :image,
-             short: '-N UUID',
-             long: '--image UUID',
-             description: 'The image or snapshot UUID'
+             short: '-N ID',
+             long: '--image ID',
+             description: 'The image or snapshot ID'
 
       option :type,
              short: '-t TYPE',
              long: '--type TYPE',
-             description: 'The disk type; currently only HDD.',
+             description: 'The disk type (HDD or SSD)',
              required: true
 
       option :licencetype,
              short: '-l LICENCE',
              long: '--licence-type LICENCE',
              description: 'The licence type of the volume (LINUX, WINDOWS, UNKNOWN, OTHER)'
+
+      option :imagepassword,
+             short: '-P PASSWORD',
+             long: '--image-password PASSWORD',
+             description: 'The password set on the image for the "root" or "Administrator" user'
 
       option :sshkeys,
              short: '-K SSHKEY[,SSHKEY,...]',
@@ -76,7 +87,7 @@ class Chef
              proc: proc { |sshkeys| sshkeys.split(',') }
 
       option :nicname,
-             long: '--name NAME',
+             long: '--nic-name NAME',
              description: 'Name of the NIC'
 
       option :ips,
@@ -108,9 +119,16 @@ class Chef
           bus: config[:bus] || 'VIRTIO',
           image: config[:image],
           type: config[:type],
-          licenceType: config[:licencetype],
-          sshKeys: config[:sshkeys]
+          licenceType: config[:licencetype]
         }
+
+        if config[:sshkeys]
+          volume_params[:sshKeys] = config[:sshkeys]
+        end
+
+        if config[:imagepassword]
+          volume_params[:imagePassword] = config[:imagepassword]
+        end
 
         nic_params = {
           name: config[:nicname],
@@ -122,6 +140,7 @@ class Chef
         params = {
           name: config[:name],
           cores: config[:cores],
+          cpuFamily: config[:cpufamily],
           ram: config[:ram],
           availabilityZone: config[:availabilityzone],
           volumes: [volume_params],
@@ -142,6 +161,7 @@ class Chef
         puts "#{ui.color('ID', :cyan)}: #{server.id}"
         puts "#{ui.color('Name', :cyan)}: #{server.properties['name']}"
         puts "#{ui.color('Cores', :cyan)}: #{server.properties['cores']}"
+        puts "#{ui.color('CPU Family', :cyan)}: #{server.properties['cpuFamily']}"
         puts "#{ui.color('Ram', :cyan)}: #{server.properties['ram']}"
         puts "#{ui.color('Availability Zone', :cyan)}: #{server.properties['availabilityZone']}"
 

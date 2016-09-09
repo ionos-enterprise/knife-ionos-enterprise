@@ -8,20 +8,20 @@ class Chef
       banner 'knife profitbricks firewall create (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
-             description: 'UUID of the data center',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
+             description: 'ID of the data center',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
 
       option :server_id,
-             short: '-S SERVER_UUID',
-             long: '--server-id SERVER_UUID',
-             description: 'UUID of the server'
+             short: '-S SERVER_ID',
+             long: '--server-id SERVER_ID',
+             description: 'ID of the server'
 
       option :nic_id,
-             short: '-N NIC_UUID',
-             long: '--nic-id NIC_UUID',
-             description: 'UUID of the NIC'
+             short: '-N NIC_ID',
+             long: '--nic-id NIC_ID',
+             description: 'ID of the NIC'
 
       option :name,
              short: '-n NAME',
@@ -34,7 +34,7 @@ class Chef
              default: 'TCP',
              description: 'The protocol of the firewall rule (TCP, UDP, ICMP,' \
                           ' ANY)',
-              required: true
+             required: true
 
       option :sourcemac,
              short: '-m MAC',
