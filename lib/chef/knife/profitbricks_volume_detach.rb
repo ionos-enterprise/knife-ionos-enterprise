@@ -5,19 +5,19 @@ class Chef
     class ProfitbricksVolumeDetach < Knife
       include Knife::ProfitbricksBase
 
-      banner 'knife profitbricks volume detach VOLUME_UUID [VOLUME_UUID] (options)'
+      banner 'knife profitbricks volume detach VOLUME_ID [VOLUME_ID] (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
-             description: 'The UUID of the data center',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
+             description: 'The ID of the data center',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true
 
       option :server_id,
-             short: '-S SERVER_UUID',
-             long: '--server-id SERVER_UUID',
-             description: 'The UUID of the server',
+             short: '-S SERVER_ID',
+             long: '--server-id SERVER_ID',
+             description: 'The ID of the server',
              required: true
 
       def run

@@ -5,25 +5,25 @@ class Chef
     class ProfitbricksFirewallDelete < Knife
       include Knife::ProfitbricksBase
 
-      banner 'knife profitbricks firewall delete FIREWALL_UUID [FIREWALL_UUID] (options)'
+      banner 'knife profitbricks firewall delete FIREWALL_ID [FIREWALL_ID] (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
-             description: 'The UUID of the data center',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
+             description: 'The ID of the data center',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true
 
       option :server_id,
-             short: '-S SERVER_UUID',
-             long: '--server-id SERVER_UUID',
-             description: 'The UUID of the server',
+             short: '-S SERVER_ID',
+             long: '--server-id SERVER_ID',
+             description: 'The ID of the server',
              required: true
 
       option :nic_id,
-             short: '-N NIC_UUID',
-             long: '--nic-id NIC_UUID',
-             description: 'UUID of the NIC',
+             short: '-N NIC_ID',
+             long: '--nic-id NIC_ID',
+             description: 'ID of the NIC',
              required: true
 
       def run

@@ -8,8 +8,8 @@ class Chef
       banner 'knife profitbricks volume create (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
              description: 'Name of the data center',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true
@@ -31,14 +31,19 @@ class Chef
              description: 'The bus type of the volume (VIRTIO or IDE)'
 
       option :image,
-             short: '-N UUID',
-             long: '--image UUID',
-             description: 'The image or snapshot UUID'
+             short: '-N ID',
+             long: '--image ID',
+             description: 'The image or snapshot ID'
+
+      option :imagepassword,
+             short: '-P PASSWORD',
+             long: '--image-password PASSWORD',
+             description: 'The password set on the image for the "root" or "Administrator" user'
 
       option :type,
              short: '-t TYPE',
              long: '--type TYPE',
-             description: 'The disk type; currently only HDD.',
+             description: 'The disk type (HDD OR SSD)',
              required: true
 
       option :licencetype,
@@ -64,8 +69,15 @@ class Chef
           image: config[:image],
           type: config[:type],
           licenceType: config[:licencetype],
-          sshKeys: config[:sshkeys]
         }
+
+        if config[:sshkeys]
+          params[:sshKeys] = config[:sshkeys]
+        end
+
+        if config[:imagepassword]
+          params[:imagePassword] = config[:imagepassword]
+        end
 
         connection
         volume = ProfitBricks::Volume.create(

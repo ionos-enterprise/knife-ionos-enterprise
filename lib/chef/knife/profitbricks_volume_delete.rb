@@ -8,8 +8,8 @@ class Chef
       banner 'knife profitbricks volume delete SERVER_ID [SERVER_ID] (options)'
 
       option :datacenter_id,
-             short: '-D UUID',
-             long: '--datacenter-id UUID',
+             short: '-D ID',
+             long: '--datacenter-id ID',
              description: 'Name of the data center',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true

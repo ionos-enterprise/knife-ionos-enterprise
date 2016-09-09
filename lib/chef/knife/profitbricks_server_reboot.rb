@@ -5,12 +5,12 @@ class Chef
     class ProfitbricksServerReboot < Knife
       include Knife::ProfitbricksBase
 
-      banner 'knife profitbricks server reboot SERVER_UUID [SERVER_UUID] (options)'
+      banner 'knife profitbricks server reboot SERVER_ID [SERVER_ID] (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
-             description: 'UUID of the data center',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
+             description: 'ID of the data center',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true
 

@@ -8,8 +8,8 @@ class Chef
       banner 'knife profitbricks server create (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
              description: 'Name of the virtual datacenter',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true
@@ -26,6 +26,12 @@ class Chef
              description: 'The number of processor cores',
              required: true
 
+      option :cpufamily,
+             short: '-f CPU_FAMILY',
+             long: '--cpu-family CPU_FAMILY',
+             description: 'The family of the CPU (INTEL_XEON or AMD_OPTERON)',
+             default: 'AMD_OPTERON' 
+
       option :ram,
              short: '-r RAM',
              long: '--ram RAM',
@@ -39,11 +45,11 @@ class Chef
              default: 'AUTO'
 
       option :bootvolume,
-             long: '--boot-volume VOLUME_UUID',
+             long: '--boot-volume VOLUME_ID',
              description: 'Reference to a volume used for booting'
 
       option :bootcdrom,
-             long: '--boot-cdrom CDROM_UUID',
+             long: '--boot-cdrom CDROM_ID',
              description: 'Reference to a CD-ROM used for booting'
 
       def run
@@ -53,6 +59,7 @@ class Chef
         params = {
           name: config[:name],
           cores: config[:cores],
+          cpuFamily: config[:cpufamily],
           ram: config[:ram],
           availabilityZone: config[:availabilityzone],
           bootVolume: config[:bootvolume],
@@ -73,6 +80,7 @@ class Chef
         puts "#{ui.color('ID', :cyan)}: #{server.id}"
         puts "#{ui.color('Name', :cyan)}: #{server.properties['name']}"
         puts "#{ui.color('Cores', :cyan)}: #{server.properties['cores']}"
+        puts "#{ui.color('CPU Family', :cyan)}: #{server.properties['cpuFamily']}"
         puts "#{ui.color('Ram', :cyan)}: #{server.properties['ram']}"
         puts "#{ui.color('Availability Zone', :cyan)}: #{server.properties['availabilityZone']}"
         puts "#{ui.color('Boot Volume', :cyan)}: #{server.properties['bootVolume']}"

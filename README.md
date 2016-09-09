@@ -176,7 +176,7 @@ Now the data center can be created.
 
 Once the data center is provisioned, both a server and volume can be created. The volume will use an existing image as identified above.
 
-    knife profitbricks server create --datacenter-id ade28808-9253-4d4e-9f5d-f1f7f1038fb1 --name "Frontend Webserver" --cores 1 --ram 1024 --availability-zone ZONE_1
+    knife profitbricks server create --datacenter-id ade28808-9253-4d4e-9f5d-f1f7f1038fb1 --name "Frontend Webserver" --cores 1 --ram 1024 --availability-zone ZONE_1 --cpu-family INTEL_XEON
     knife profitbricks volume create --datacenter-id ade28808-9253-4d4e-9f5d-f1f7f1038fb1 --name "OS Volume" --size 5 --type HDD --image c4263e0f-e75e-11e4-91fd-8fa3eaae9f6b --ssh-keys "ssh-rsa AAAAB3NzaC1..."
 
 The volume can then be attached to the server.
@@ -193,7 +193,7 @@ Here is an example of adding a firewall rule to the newly created NIC.
 
 A composite server can also be created with attached volume and NIC in a single command.
 
-    knife profitbricks composite server create --datacenter-id ade28808-9253-4d4e-9f5d-f1f7f1038fb1 --name "Backend Database" --cores 1 --ram 8192 --size 5 --type HDD --lan 1 --image 2ead2908-df61-11e5-80a4-52540005ab80 --ssh-keys "ssh-rsa AAAAB3NzaC1..."
+    knife profitbricks composite server create --datacenter-id ade28808-9253-4d4e-9f5d-f1f7f1038fb1 --name "Backend Database" --cores 1 --ram 8192 --size 5 --type SSD --lan 1 --image 2ead2908-df61-11e5-80a4-52540005ab80 --ssh-keys "ssh-rsa AAAAB3NzaC1..."
 
 The new data center and **all resources within that data center** can be deleted.
 

@@ -8,8 +8,8 @@ class Chef
       banner 'knife profitbricks lan create (options)'
 
       option :datacenter_id,
-             short: '-D DATACENTER_UUID',
-             long: '--datacenter-id DATACENTER_UUID',
+             short: '-D DATACENTER_ID',
+             long: '--datacenter-id DATACENTER_ID',
              description: 'Name of the data center',
              proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
              required: true
