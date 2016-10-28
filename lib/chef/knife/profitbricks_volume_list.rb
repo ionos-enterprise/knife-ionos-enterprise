@@ -18,7 +18,7 @@ class Chef
              short: '-S SERVER_ID',
              long: '--server-id SERVER_ID',
              description: 'The ID of the server',
-             required: true
+             required: false
 
       def run
         $stdout.sync = true
@@ -29,6 +29,7 @@ class Chef
           ui.color('Bus', :bold),
           ui.color('Image', :bold),
           ui.color('Type', :bold),
+          ui.color('Zone', :bold),
           ui.color('Device Number', :bold)
         ]
 
@@ -42,6 +43,7 @@ class Chef
             volume_list << volume.properties['bus']
             volume_list << volume.properties['image']
             volume_list << volume.properties['type']
+            volume_list << volume.properties['availabilityZone']
             volume_list << volume.properties['deviceNumber'].to_s
           end 
         else
@@ -52,11 +54,12 @@ class Chef
             volume_list << volume.properties['bus']
             volume_list << volume.properties['image']
             volume_list << volume.properties['type']
+            volume_list << volume.properties['availabilityZone']
             volume_list << volume.properties['deviceNumber'].to_s
           end
         end
 
-        puts ui.list(volume_list, :uneven_columns_across, 7)
+        puts ui.list(volume_list, :uneven_columns_across, 8)
       end
     end
   end

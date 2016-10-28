@@ -44,6 +44,12 @@ class Chef
              description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created',
              required: true
 
+      option :nat,
+             long: '--nat',
+             boolean: true | false,
+             description: 'Set to enable NAT on the NIC',
+             required: false
+
       def run
         $stdout.sync = true
 
@@ -55,6 +61,10 @@ class Chef
           dhcp: config[:dhcp],
           lan: config[:lan]
         }
+
+        if config[:nat]
+          params[:nat] = config[:nat]
+        end
 
         connection
         nic = ProfitBricks::NIC.create(
@@ -73,6 +83,7 @@ class Chef
         puts "#{ui.color('IPs', :cyan)}: #{nic.properties['ips']}"
         puts "#{ui.color('DHCP', :cyan)}: #{nic.properties['dhcp']}"
         puts "#{ui.color('LAN', :cyan)}: #{nic.properties['lan']}"
+        puts "#{ui.color('NAT', :cyan)}: #{nic.properties['nat']}"
 
         puts 'done'
       end

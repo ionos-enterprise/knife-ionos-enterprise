@@ -27,6 +27,7 @@ class Chef
           ui.color('Name', :bold),
           ui.color('IPs', :bold),
           ui.color('DHCP', :bold),
+          ui.color('NAT', :bold),
           ui.color('LAN', :bold)
         ]
         connection
@@ -36,10 +37,11 @@ class Chef
           nic_list << nic.properties['name']
           nic_list << nic.properties['ips'].to_s
           nic_list << nic.properties['dhcp'].to_s
+          nic_list << nic.properties['nat'].to_s
           nic_list << nic.properties['lan'].to_s
         end
 
-        puts ui.list(nic_list, :uneven_columns_across, 5)
+        puts ui.list(nic_list, :uneven_columns_across, 6)
       end
     end
   end
