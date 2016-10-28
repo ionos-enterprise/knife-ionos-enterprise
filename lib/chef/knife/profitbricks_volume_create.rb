@@ -57,6 +57,12 @@ class Chef
              description: 'A list of public SSH keys to include',
              proc: proc { |sshkeys| sshkeys.split(',') }
 
+      option :volume_availability_zone,
+             short: '-Z AVAILABILITY_ZONE',
+             long: '--availability-zone AVAILABILITY_ZONE',
+             description: 'The volume availability zone of the server',
+             required: false
+
       def run
         $stdout.sync = true
 
@@ -79,6 +85,10 @@ class Chef
           params[:imagePassword] = config[:imagepassword]
         end
 
+        if config[:volume_availability_zone]
+          params[:availabilityZone] = config[:volume_availability_zone]
+        end
+
         connection
         volume = ProfitBricks::Volume.create(
           config[:datacenter_id],
@@ -97,6 +107,7 @@ class Chef
         puts "#{ui.color('Image', :cyan)}: #{volume.properties['image']}"
         puts "#{ui.color('Type', :cyan)}: #{volume.properties['type']}"
         puts "#{ui.color('Licence Type', :cyan)}: #{volume.properties['licenceType']}"
+        puts "#{ui.color('Zone', :cyan)}: #{volume.properties['availabilityZone']}"
         puts 'done'
       end
     end

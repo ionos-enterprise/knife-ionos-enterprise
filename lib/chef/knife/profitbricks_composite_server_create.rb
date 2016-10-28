@@ -80,6 +80,12 @@ class Chef
              long: '--image-password PASSWORD',
              description: 'The password set on the image for the "root" or "Administrator" user'
 
+      option :volume_availability_zone,
+             short: '-Z AVAILABILITY_ZONE',
+             long: '--volume-availability-zone AVAILABILITY_ZONE',
+             description: 'The volume availability zone of the server',
+             required: false
+
       option :sshkeys,
              short: '-K SSHKEY[,SSHKEY,...]',
              long: '--ssh-keys SSHKEY1,SSHKEY2,...',
@@ -109,6 +115,11 @@ class Chef
              description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created',
              required: true
 
+      option :nat,
+             long: '--nat',
+             description: 'Set to enable NAT on the NIC',
+             required: false
+
       def run
         $stdout.sync = true
 
@@ -130,12 +141,20 @@ class Chef
           volume_params[:imagePassword] = config[:imagepassword]
         end
 
+        if config[:volume_availability_zone]
+          volume_params[:availabilityZone] = config[:volume_availability_zone]
+        end
+
         nic_params = {
           name: config[:nicname],
           ips: config[:ips],
           dhcp: config[:dhcp],
           lan: config[:lan]
         }
+
+        if config[:nat]
+          nic_params[:nat] = config[:nat]
+        end
 
         params = {
           name: config[:name],
