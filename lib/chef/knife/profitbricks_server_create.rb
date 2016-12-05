@@ -29,7 +29,7 @@ class Chef
              short: '-f CPU_FAMILY',
              long: '--cpu-family CPU_FAMILY',
              description: 'The family of the CPU (INTEL_XEON or AMD_OPTERON)',
-             default: 'AMD_OPTERON' 
+             default: 'AMD_OPTERON'
 
       option :ram,
              short: '-r RAM',
@@ -60,10 +60,16 @@ class Chef
           cores: config[:cores],
           cpuFamily: config[:cpufamily],
           ram: config[:ram],
-          availabilityZone: config[:availabilityzone],
-          bootVolume: config[:bootvolume],
-          bootCdrom: config[:bootcdrom]
+          availabilityZone: config[:availabilityzone]
         }
+
+        if config.key?(:bootcdrom)
+          params[:bootCdrom] = { id: config[:bootcdrom] }
+        end
+
+        if config.key?(:bootvolume)
+          params[:bootVolume] = { id: config[:bootvolume] }
+        end
 
         connection
         server = ProfitBricks::Server.create(
