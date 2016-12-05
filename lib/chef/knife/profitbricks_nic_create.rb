@@ -11,8 +11,7 @@ class Chef
              short: '-D DATACENTER_ID',
              long: '--datacenter-id DATACENTER_ID',
              description: 'Name of the data center',
-             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id },
-             required: true
+             proc: proc { |datacenter_id| Chef::Config[:knife][:datacenter_id] = datacenter_id }
 
       option :server_id,
              short: '-S SERVER_ID',
