@@ -32,6 +32,8 @@
     * [IP Block](#ip-block)
     * [Firewall](#firewall)
 * [Support](#support)
+* [Testing](#testing)
+* [Contributing](#contributing)
 
 ## Concepts
 
@@ -86,7 +88,7 @@ Now the parameters can be set as environment variables:
     $ export PROFITBRICKS_USERNAME='username'
     $ export PROFITBRICKS_PASSWORD='password'
 
-# How To:
+# How To
 
 ## List Data Centers
 
