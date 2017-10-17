@@ -5,11 +5,30 @@ require 'chef'
 RSpec.configure do |config|
   config.before(:each) do
     Chef::Config.reset
-    { :profitbricks_username => 'farid.shah@profitbricks.com',
-      :profitbricks_password => 'spc2015',
-      :profitbricks_url => 'https://spc.profitbricks.com'
+    {
+      :profitbricks_username => ENV['PROFITBRICKS_USERNAME'],
+      :profitbricks_password => ENV['PROFITBRICKS_PASSWORD'],
+      :profitbricks_url => ENV['PROFITBRICKS_API_URL']
     }.each do |key, value|
       Chef::Config[:knife][key] = value
     end
   end
+end
+
+class Chef
+  class Knife
+  end
+end
+
+def get_image(image_name, image_type, image_location)
+  images = ProfitBricks::Image.list
+  minImage = nil
+  images.each do |image|
+
+    hasSubstring = image.properties['name'].downcase.include? image_name
+    if  image.properties['public'] == true && image.properties['imageType'] == image_type && image.properties['location'] == image_location && hasSubstring
+      minImage = image
+    end
+  end
+    minImage
 end

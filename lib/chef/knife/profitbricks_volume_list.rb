@@ -16,8 +16,7 @@ class Chef
       option :server_id,
              short: '-S SERVER_ID',
              long: '--server-id SERVER_ID',
-             description: 'The ID of the server',
-             required: false
+             description: 'The ID of the server'
 
       def run
         $stdout.sync = true
@@ -33,8 +32,8 @@ class Chef
         ]
 
         connection
-        if defined?(config[:server_id]) && config[:server_id]
-          server = ProfitBricks::Server.get(config[:datacenter_id], config[:server_id])
+        if defined?(Chef::Config[:knife][:server_id])
+          server = ProfitBricks::Server.get(Chef::Config[:knife][:datacenter_id], Chef::Config[:knife][:server_id])
           server.list_volumes.each do |volume|
             volume_list << volume.id
             volume_list << volume.properties['name']
@@ -44,9 +43,9 @@ class Chef
             volume_list << volume.properties['type']
             volume_list << volume.properties['availabilityZone']
             volume_list << volume.properties['deviceNumber'].to_s
-          end 
+          end
         else
-          ProfitBricks::Volume.list(config[:datacenter_id]).each do |volume|
+          ProfitBricks::Volume.list(Chef::Config[:knife][:datacenter_id]).each do |volume|
             volume_list << volume.id
             volume_list << volume.properties['name']
             volume_list << volume.properties['size'].to_s

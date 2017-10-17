@@ -21,8 +21,7 @@ class Chef
       option :size,
              short: '-S SIZE',
              long: '--size SIZE',
-             description: 'The size of the volume in GB',
-             required: true
+             description: 'The size of the volume in GB'
 
       option :bus,
              short: '-b BUS',
@@ -42,15 +41,14 @@ class Chef
       option :type,
              short: '-t TYPE',
              long: '--type TYPE',
-             description: 'The disk type (HDD OR SSD)',
-             required: true
+             description: 'The disk type (HDD OR SSD)'
 
       option :licencetype,
              short: '-l LICENCE',
              long: '--licence-type LICENCE',
              description: 'The licence type of the volume (LINUX, WINDOWS, UNKNOWN, OTHER)'
 
-      option :sshkeys, 
+      option :sshkeys,
              short: '-K SSHKEY[,SSHKEY,...]',
              long: '--ssh-keys SSHKEY1,SSHKEY2,...',
              description: 'A list of public SSH keys to include',
@@ -64,33 +62,34 @@ class Chef
 
       def run
         $stdout.sync = true
+        validate_required_params(%i(datacenter_id name type size), Chef::Config[:knife])
 
         print "#{ui.color('Creating volume...', :magenta)}"
 
         params = {
-          name: config[:name],
-          size: config[:size],
-          bus: config[:bus] || 'VIRTIO',
-          image: config[:image],
-          type: config[:type],
-          licenceType: config[:licencetype],
+          name: Chef::Config[:knife][:name],
+          size: Chef::Config[:knife][:size],
+          bus: Chef::Config[:knife][:bus] || 'VIRTIO',
+          image: Chef::Config[:knife][:image],
+          type: Chef::Config[:knife][:type],
+          licenceType: Chef::Config[:knife][:licencetype],
         }
 
-        if config[:sshkeys]
-          params[:sshKeys] = config[:sshkeys]
+        if Chef::Config[:knife][:sshkeys]
+          params[:sshKeys] = Chef::Config[:knife][:sshkeys]
         end
 
-        if config[:imagepassword]
-          params[:imagePassword] = config[:imagepassword]
+        if Chef::Config[:knife][:imagepassword]
+          params[:imagePassword] = Chef::Config[:knife][:imagepassword]
         end
 
-        if config[:volume_availability_zone]
-          params[:availabilityZone] = config[:volume_availability_zone]
+        if Chef::Config[:knife][:volume_availability_zone]
+          params[:availabilityZone] = Chef::Config[:knife][:volume_availability_zone]
         end
 
         connection
         volume = ProfitBricks::Volume.create(
-          config[:datacenter_id],
+          Chef::Config[:knife][:datacenter_id],
           params.compact
         )
 

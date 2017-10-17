@@ -16,14 +16,15 @@ class Chef
       option :server_id,
              short: '-S SERVER_ID',
              long: '--server-id SERVER_ID',
-             description: 'The ID of the server assigned the NIC',
-             required: true
+             description: 'The ID of the server assigned the NIC'
 
       def run
         connection
+        validate_required_params(%i(datacenter_id server_id), Chef::Config[:knife])
+
         @name_args.each do |nic_id|
           begin
-            nic = ProfitBricks::NIC.get(config[:datacenter_id], config[:server_id], nic_id)
+            nic = ProfitBricks::NIC.get(Chef::Config[:knife][:datacenter_id],  Chef::Config[:knife][:server_id], nic_id)
           rescue Excon::Errors::NotFound
             ui.error("NIC ID #{nic_id} not found. Skipping.")
             next

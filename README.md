@@ -31,6 +31,7 @@
     * [NIC](#nic)
     * [IP Block](#ip-block)
     * [Firewall](#firewall)
+    * [Failover IP](#failover-ips)
 * [Support](#support)
 * [Testing](#testing)
 * [Contributing](#contributing)
@@ -383,6 +384,20 @@ Creates a new firewall rule on an existing NIC.
 Deletes a firewall rule from an existing NIC.
 
     knife profitbricks firewall delete --datacenter-id [datacenter_id] --server-id [server_id] --nic-id [nic_id] [firewall_id]
+
+## IP Failover
+
+### Add IP failover to LAN
+
+Adds IPs to LAN
+
+    knife profitbricks failover add --datacenter_id [datacenter_id] --lan_id [lan_id] --ip [ip1] --nic_id [nic_id]
+
+### Remove IP Failover from LAN
+
+Remove IP Failover from LAN
+
+    knife profitbricks failover remove --datacenter_id [datacenter_id] --lan_id [lan_id] --ip [ip1] --nic_id [nic_id]
 
 ## Support
 

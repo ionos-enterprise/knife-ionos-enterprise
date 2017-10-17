@@ -17,7 +17,7 @@ class Chef
         connection
         @name_args.each do |server_id|
           begin
-            server = ProfitBricks::Server.get(config[:datacenter_id], server_id)
+            server = ProfitBricks::Server.get(Chef::Config[:knife][:datacenter_id], server_id)
           rescue Excon::Errors::NotFound
             ui.error("Server ID #{server_id} not found. Skipping.")
             next

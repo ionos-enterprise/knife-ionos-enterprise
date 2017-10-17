@@ -44,6 +44,27 @@ class Chef
           puts "#{ui.color(label, color)}: #{value}"
         end
       end
+
+      def validate_required_params(required_params, params)
+        missing_params = required_params.select do |param|
+           params[param].nil?
+         end
+        def error_and_exit(message)
+          ui.error message
+          exit(1)
+        end
+      end
+
+      def get_image(image_name, image_type, image_location)
+        images = ProfitBricks::Image.list
+        minImage = nil
+        images.each do |image|
+          if image.properties['name'].downcase.include? image_name && image.properties['public'] == true && image.properties['imageType'] == image_type && image.properties['location'] == image_location
+            minImage = image
+          end
+        end
+          minImage
+      end
     end
   end
 end

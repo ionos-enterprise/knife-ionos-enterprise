@@ -16,21 +16,21 @@ class Chef
       option :server_id,
              short: '-S SERVER_ID',
              long: '--server-id SERVER_ID',
-             description: 'The ID of the server',
-             required: true
+             description: 'The ID of the server'
 
       def run
+        validate_required_params(%i(datacenter_id server_id), Chef::Config[:knife])
+
         connection
         @name_args.each do |volume_id|
-          volume = ProfitBricks::Volume.get(config[:datacenter_id], nil, volume_id)
-          volume
+          volume = ProfitBricks::Volume.get(Chef::Config[:knife][:datacenter_id], nil, volume_id)
 
           if volume.nil?
             ui.error("Volume ID #{volume_id} not found. Skipping.")
             next
           end
 
-          volume.attach(config[:server_id])
+          volume.attach(Chef::Config[:knife][:server_id])
           ui.msg("Volume #{volume_id} attached to server")
         end
       end

@@ -27,7 +27,7 @@ class Chef
         ]
         connection
 
-        ProfitBricks::Server.list(config[:datacenter_id]).each do |server|
+        ProfitBricks::Server.list(Chef::Config[:knife][:datacenter_id]).each do |server|
           server_list << server.id
           server_list << server.properties['name']
           server_list << server.properties['cores'].to_s
