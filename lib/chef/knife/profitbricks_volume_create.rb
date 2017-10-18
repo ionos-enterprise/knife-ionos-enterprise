@@ -33,6 +33,10 @@ class Chef
              long: '--image ID',
              description: 'The image or snapshot ID'
 
+       option :imagealias,
+              long: '--imagealias IMAGE_ALIAS',
+              description: '(required) The image alias'
+
       option :imagepassword,
              short: '-P PASSWORD',
              long: '--image-password PASSWORD',
@@ -64,16 +68,33 @@ class Chef
         $stdout.sync = true
         validate_required_params(%i(datacenter_id name type size), Chef::Config[:knife])
 
+        if !Chef::Config[:knife][:image] && !Chef::Config[:knife][:imagealias]
+          ui.error("Either 'image' or 'imagealias' parameter must be provided")
+          exit(1)
+        end
+
+        if !Chef::Config[:knife][:sshkeys] && !Chef::Config[:knife][:imagepassword]
+          ui.error("Either 'imagepassword' or 'sshkeys' parameter must be provided")
+          exit(1)
+        end
+
         print "#{ui.color('Creating volume...', :magenta)}"
 
         params = {
           name: Chef::Config[:knife][:name],
           size: Chef::Config[:knife][:size],
           bus: Chef::Config[:knife][:bus] || 'VIRTIO',
-          image: Chef::Config[:knife][:image],
           type: Chef::Config[:knife][:type],
           licenceType: Chef::Config[:knife][:licencetype],
         }
+
+        if Chef::Config[:knife][:image]
+          params['image'] = Chef::Config[:knife][:image]
+        end
+
+        if Chef::Config[:knife][:imagealias]
+          params['imageAlias'] = Chef::Config[:knife][:imagealias]
+        end
 
         if Chef::Config[:knife][:sshkeys]
           params[:sshKeys] = Chef::Config[:knife][:sshkeys]

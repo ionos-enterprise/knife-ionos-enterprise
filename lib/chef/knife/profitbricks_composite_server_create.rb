@@ -59,6 +59,10 @@ class Chef
              long: '--image ID',
              description: '(required) The image or snapshot ID'
 
+      option :imagealias,
+             long: '--imagealias IMAGE_ALIAS',
+             description: '(required) The image alias'
+
       option :type,
              short: '-t TYPE',
              long: '--type TYPE',
@@ -67,7 +71,7 @@ class Chef
       option :licencetype,
              short: '-l LICENCE',
              long: '--licence-type LICENCE',
-             description: 'The licence type of the volume (LINUX, WINDOWS, UNKNOWN, OTHER)'
+             description: 'The licence type of the volume (LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER)'
 
       option :imagepassword,
              short: '-P PASSWORD',
@@ -114,9 +118,19 @@ class Chef
       def run
         $stdout.sync = true
 
-        validate_required_params(%i(datacenter_id name cores ram size image type dhcp lan), Chef::Config[:knife])
+        validate_required_params(%i[datacenter_id name cores ram size type dhcp lan], Chef::Config[:knife])
 
-        print "#{ui.color('Creating composite server...', :magenta)}"
+        if !Chef::Config[:knife][:image] && !Chef::Config[:knife][:imagealias]
+          ui.error("Either 'image' or 'imagealias' parameter must be provided")
+          exit(1)
+        end
+
+        if !Chef::Config[:knife][:sshkeys] && !Chef::Config[:knife][:imagepassword]
+          ui.error("Either 'imagepassword' or 'sshkeys' parameter must be provided")
+          exit(1)
+        end
+        
+        print ui.color('Creating composite server...', :magenta).to_s
         volume_params = {
           name: Chef::Config[:knife][:volumename],
           size: Chef::Config[:knife][:size],
@@ -125,6 +139,14 @@ class Chef
           type: Chef::Config[:knife][:type],
           licenceType: Chef::Config[:knife][:licencetype]
         }
+
+        if Chef::Config[:knife][:image]
+          volume_params['image'] = Chef::Config[:knife][:image]
+        end
+
+        if Chef::Config[:knife][:imagealias]
+          volume_params['imageAlias'] = Chef::Config[:knife][:imagealias]
+        end
 
         if Chef::Config[:knife][:sshkeys]
           volume_params[:sshKeys] = Chef::Config[:knife][:sshkeys]
@@ -145,9 +167,7 @@ class Chef
           lan: Chef::Config[:knife][:lan]
         }
 
-        if config[:nat]
-          nic_params[:nat] = Chef::Config[:knife][:nat]
-        end
+        nic_params[:nat] = Chef::Config[:knife][:nat] if config[:nat]
 
         params = {
           name: Chef::Config[:knife][:name],

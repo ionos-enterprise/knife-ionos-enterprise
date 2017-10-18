@@ -399,6 +399,12 @@ Remove IP Failover from LAN
 
     knife profitbricks failover remove --datacenter_id [datacenter_id] --lan_id [lan_id] --ip [ip1] --nic_id [nic_id]
 
+## Contract Resources
+
+Lists information about available contract resources
+
+    knife profitbricks contract get
+
 ## Support
 
 Please report any issues through the [project repository on GitHub](https://github.com/profitbricks/knife-profitbricks).

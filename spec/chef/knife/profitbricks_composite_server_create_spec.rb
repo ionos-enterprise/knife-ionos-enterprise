@@ -26,15 +26,10 @@ describe Chef::Knife::ProfitbricksCompositeServerCreate do
 
   describe '#run' do
     it 'should create a composite server' do
-      location = 'us/las'
-      image_name = 'ubuntu'
-      image_type = 'HDD'
-
-      image = get_image(image_name, image_type, location)
 
       datacenter = ProfitBricks::Datacenter.create(name: 'Chef test',
                                                    description: 'Chef test datacenter',
-                                                   location: location)
+                                                   location: 'us/las')
 
       datacenter.wait_for { ready? }
 
@@ -51,7 +46,7 @@ describe Chef::Knife::ProfitbricksCompositeServerCreate do
         dhcp: true,
         lan: 1,
         datacenter_id: @dcid,
-        image: image.id,
+        imagealias: 'ubuntu:latest',
         type: 'HDD',
         imagepassword: 'K3tTj8G14a3EgKyNeeiY'
       }.each do |key, value|

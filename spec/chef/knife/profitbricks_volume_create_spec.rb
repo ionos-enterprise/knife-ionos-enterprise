@@ -27,17 +27,11 @@ describe Chef::Knife::ProfitbricksVolumeCreate do
                                                   location: 'us/las')
     @datacenter.wait_for { ready? }
 
-    location = 'us/las'
-    image_name = 'ubuntu'
-    image_type = 'HDD'
-
-    image = get_image(image_name, image_type, location)
-
     Chef::Config[:knife][:datacenter_id] = @datacenter.id
-    Chef::Config[:knife][:image] = image.id
+    Chef::Config[:knife][:imagealias] = 'ubuntu:latest'
     Chef::Config[:knife][:size] = 4
     Chef::Config[:knife][:name] = 'Chef Test'
-    Chef::Config[:knife][:type] = image_type
+    Chef::Config[:knife][:type] = 'HDD'
     Chef::Config[:knife][:imagepassword] = 'aheoizj4689'
 
     allow(subject).to receive(:puts)

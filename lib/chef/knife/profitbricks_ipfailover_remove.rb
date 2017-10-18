@@ -5,7 +5,7 @@ class Chef
     class ProfitbricksFailoverRemove < Knife
       include Knife::ProfitbricksBase
 
-      banner 'knife profitbricks failover remove (options)'
+      banner 'knife profitbricks ipfailover remove (options)'
 
       option :datacenter_id,
              short: '-D DATACENTER_ID',
