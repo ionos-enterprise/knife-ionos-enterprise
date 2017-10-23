@@ -57,13 +57,13 @@ class Chef
 
       def get_image(image_name, image_type, image_location)
         images = ProfitBricks::Image.list
-        minImage = nil
+        min_image = nil
         images.each do |image|
           if image.properties['name'].downcase.include? image_name && image.properties['public'] == true && image.properties['imageType'] == image_type && image.properties['location'] == image_location
-            minImage = image
+            min_image = image
           end
         end
-          minImage
+          min_image
       end
     end
   end

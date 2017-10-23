@@ -2,10 +2,10 @@ require 'chef/knife/profitbricks_base'
 
 class Chef
   class Knife
-    class ProfitbricksContractGet < Knife
+    class ProfitbricksContractShow < Knife
       include Knife::ProfitbricksBase
 
-      banner 'knife profitbricks contract get'
+      banner 'knife profitbricks contract show'
 
       def run
         $stdout.sync = true
@@ -27,9 +27,9 @@ class Chef
         puts "#{ui.color('SSD limit per volume', :cyan)}: #{contract.properties['resourceLimits']['ssdLimitPerVolume']}"
         puts "#{ui.color('SSD limit per contract', :cyan)}: #{contract.properties['resourceLimits']['ssdLimitPerContract']}"
         puts "#{ui.color('SSD volume provisioned', :cyan)}: #{contract.properties['resourceLimits']['ssdVolumeProvisioned']}"
-        puts "#{ui.color('Reservable Ips', :cyan)}: #{contract.properties['resourceLimits']['reservableIps']}"
-        puts "#{ui.color('Reservable Ips on contract', :cyan)}: #{contract.properties['resourceLimits']['reservedIpsOnContract']}"
-        puts "#{ui.color('Reservable Ips in use', :cyan)}: #{contract.properties['resourceLimits']['reservedIpsInUse']}"
+        puts "#{ui.color('Reservable IPs', :cyan)}: #{contract.properties['resourceLimits']['reservableIps']}"
+        puts "#{ui.color('Reservable IPs on contract', :cyan)}: #{contract.properties['resourceLimits']['reservedIpsOnContract']}"
+        puts "#{ui.color('Reservable IPs in use', :cyan)}: #{contract.properties['resourceLimits']['reservedIpsInUse']}"
 
       end
     end

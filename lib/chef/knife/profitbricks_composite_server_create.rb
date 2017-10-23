@@ -60,7 +60,7 @@ class Chef
              description: '(required) The image or snapshot ID'
 
       option :imagealias,
-             long: '--imagealias IMAGE_ALIAS',
+             long: '--image-alias IMAGE_ALIAS',
              description: '(required) The image alias'
 
       option :type,
@@ -121,15 +121,15 @@ class Chef
         validate_required_params(%i[datacenter_id name cores ram size type dhcp lan], Chef::Config[:knife])
 
         if !Chef::Config[:knife][:image] && !Chef::Config[:knife][:imagealias]
-          ui.error("Either 'image' or 'imagealias' parameter must be provided")
+          ui.error("Either '--image' or '--image-alias' parameter must be provided")
           exit(1)
         end
 
         if !Chef::Config[:knife][:sshkeys] && !Chef::Config[:knife][:imagepassword]
-          ui.error("Either 'imagepassword' or 'sshkeys' parameter must be provided")
+          ui.error("Either '--image-password' or '--ssh-keys' parameter must be provided")
           exit(1)
         end
-        
+
         print ui.color('Creating composite server...', :magenta).to_s
         volume_params = {
           name: Chef::Config[:knife][:volumename],

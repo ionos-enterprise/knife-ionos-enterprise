@@ -8,21 +8,21 @@ class Chef
       banner 'knife profitbricks datacenter create (options)'
 
       option :name,
-             :short => '-n NAME',
-             :long => '--name NAME',
-             :description => 'Name of the data center',
-             :proc => proc { |name| Chef::Config[:knife][:name] = name }
+             short: '-n NAME',
+             long: '--name NAME',
+             description: 'Name of the data center',
+             proc: proc { |name| Chef::Config[:knife][:name] = name }
 
       option :description,
-             :short=> '-D DESCRIPTION',
-             :long=> '--description DESCRIPTION',
-             :description=> 'Description of the data center'
+             short: '-D DESCRIPTION',
+             long: '--description DESCRIPTION',
+             description: 'Description of the data center'
 
       option :location,
-             :short=> '-l LOCATION',
-             :long=> '--location LOCATION',
-             :description=> 'Location of the data center',
-             :proc => proc { |location| Chef::Config[:knife][:location] = location }#,
+             short: '-l LOCATION',
+             long: '--location LOCATION',
+             description: 'Location of the data center',
+             proc: proc { |location| Chef::Config[:knife][:location] = location }#,
 
       def run
         $stdout.sync = true

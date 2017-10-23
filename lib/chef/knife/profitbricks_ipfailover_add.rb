@@ -15,7 +15,7 @@ class Chef
 
       option :lan_id,
              short: '-l LAN_ID',
-             long: '--lan_id LAN_ID',
+             long: '--lan-id LAN_ID',
              description: 'Lan ID'
       option :ip,
              short: '-i',
@@ -24,7 +24,7 @@ class Chef
 
       option :nic_id,
              short: '-n',
-             long: '--nic_id',
+             long: '--nic-id',
              description: 'NIC to be added to IP failover group'
 
       def run
@@ -51,7 +51,7 @@ class Chef
         puts "#{ui.color('ID', :cyan)}: #{lan.id}"
         puts "#{ui.color('Name', :cyan)}: #{lan.properties['name']}"
         puts "#{ui.color('Public', :cyan)}: #{lan.properties['public']}"
-        puts "#{ui.color('ipFailover', :cyan)}: #{lan.properties['ipFailover']}"
+        puts "#{ui.color('IP Failover', :cyan)}: #{lan.properties['ipFailover']}"
 
         puts 'done'
       end

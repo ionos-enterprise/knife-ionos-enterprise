@@ -24,7 +24,7 @@ class Chef
 
         @name_args.each do |nic_id|
           begin
-            nic = ProfitBricks::NIC.get(Chef::Config[:knife][:datacenter_id],  Chef::Config[:knife][:server_id], nic_id)
+            nic = ProfitBricks::NIC.get(Chef::Config[:knife][:datacenter_id], Chef::Config[:knife][:server_id], nic_id)
           rescue Excon::Errors::NotFound
             ui.error("NIC ID #{nic_id} not found. Skipping.")
             next

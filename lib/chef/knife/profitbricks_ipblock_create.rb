@@ -10,7 +10,7 @@ class Chef
       option :location,
              short: '-l LOCATION',
              long: '--location LOCATION',
-             description: 'Location of the IP block (us/las, de/fra, de/fkb)'
+             description: 'Location of the IP block (us/las, us/ewr, de/fra, de/fkb)'
 
       option :size,
              short: '-S INT',

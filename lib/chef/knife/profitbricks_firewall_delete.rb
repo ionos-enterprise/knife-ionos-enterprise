@@ -23,7 +23,7 @@ class Chef
              description: 'ID of the NIC'
 
       def run
-        validate_required_params(%i(datacenter_id server_id nic_id) , Chef::Config[:knife])
+        validate_required_params(%i(datacenter_id server_id nic_id), Chef::Config[:knife])
         connection
         @name_args.each do |firewall_id|
           begin
