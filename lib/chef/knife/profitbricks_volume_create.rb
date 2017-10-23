@@ -89,11 +89,11 @@ class Chef
         }
 
         if Chef::Config[:knife][:image]
-          params['image'] = Chef::Config[:knife][:image]
+          params[:image] = Chef::Config[:knife][:image]
         end
 
         if Chef::Config[:knife][:imagealias]
-          params['imageAlias'] = Chef::Config[:knife][:imagealias]
+          params[:imageAlias] = Chef::Config[:knife][:imagealias]
         end
 
         if Chef::Config[:knife][:sshkeys]
