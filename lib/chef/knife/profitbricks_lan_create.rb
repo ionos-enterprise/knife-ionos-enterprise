@@ -26,16 +26,18 @@ class Chef
              description: 'Boolean indicating if the LAN faces the public ' \
                           'Internet or not; defaults to false'
 
+
       def run
         $stdout.sync = true
+        validate_required_params(%i(datacenter_id), Chef::Config[:knife])
 
         print "#{ui.color('Creating LAN...', :magenta)}"
 
         connection
         lan = ProfitBricks::LAN.create(
-          config[:datacenter_id],
-          name: config[:name],
-          public: config[:public]
+          Chef::Config[:knife][:datacenter_id],
+          name: Chef::Config[:knife][:name],
+          public: Chef::Config[:knife][:public]
         )
 
         dot = ui.color('.', :magenta)

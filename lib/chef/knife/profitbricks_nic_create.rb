@@ -16,8 +16,7 @@ class Chef
       option :server_id,
              short: '-S SERVER_ID',
              long: '--server-id SERVER_ID',
-             description: 'Name of the server',
-             required: true
+             description: 'Name of the server'
 
       option :name,
              short: '-n NAME',
@@ -40,35 +39,34 @@ class Chef
       option :lan,
              short: '-l ID',
              long: '--lan ID',
-             description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created',
-             required: true
+             description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created'
 
       option :nat,
              long: '--nat',
              boolean: true | false,
-             description: 'Set to enable NAT on the NIC',
-             required: false
+             description: 'Set to enable NAT on the NIC'
 
       def run
         $stdout.sync = true
+        validate_required_params(%i(datacenter_id server_id lan), Chef::Config[:knife])
 
         print "#{ui.color('Creating nic...', :magenta)}"
 
         params = {
-          name: config[:name],
-          ips: config[:ips],
-          dhcp: config[:dhcp],
-          lan: config[:lan]
+          name: Chef::Config[:knife][:name],
+          ips: Chef::Config[:knife][:ips],
+          dhcp: Chef::Config[:knife][:dhcp],
+          lan: Chef::Config[:knife][:lan]
         }
 
-        if config[:nat]
-          params[:nat] = config[:nat]
+        if Chef::Config[:knife][:nat]
+          params[:nat] = Chef::Config[:knife][:nat]
         end
 
         connection
         nic = ProfitBricks::NIC.create(
-          config[:datacenter_id],
-          config[:server_id],
+          Chef::Config[:knife][:datacenter_id],
+          Chef::Config[:knife][:server_id],
           params.compact
         )
 

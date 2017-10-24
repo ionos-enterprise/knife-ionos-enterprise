@@ -33,8 +33,7 @@ class Chef
              long: '--protocol PROTOCOL',
              default: 'TCP',
              description: 'The protocol of the firewall rule (TCP, UDP, ICMP,' \
-                          ' ANY)',
-             required: true
+                          ' ANY)'
 
       option :sourcemac,
              short: '-m MAC',
@@ -78,31 +77,32 @@ class Chef
       def run
         $stdout.sync = true
 
+        validate_required_params(%i(datacenter_id server_id nic_id protocol) , Chef::Config[:knife])
+
         print "#{ui.color('Creating firewall...', :magenta)}"
 
         params = {
-          name: config[:name],
-          protocol: config[:protocol],
-          sourceMac: config[:sourcemac],
-          sourceIp: config[:sourceip],
-          targetIp: config[:targetip],
-          portRangeStart: config[:portrangestart],
-          portRangeEnd: config[:portrangeend],
-          icmpType: config[:icmptype],
-          icmpCode: config[:icmpcode]
+          name: Chef::Config[:knife][:name],
+          protocol: Chef::Config[:knife][:protocol],
+          sourceMac: Chef::Config[:knife][:sourcemac],
+          sourceIp: Chef::Config[:knife][:sourceip],
+          targetIp: Chef::Config[:knife][:targetip],
+          portRangeStart: Chef::Config[:knife][:portrangestart],
+          portRangeEnd: Chef::Config[:knife][:portrangeend],
+          icmpType: Chef::Config[:knife][:icmptype],
+          icmpCode: Chef::Config[:knife][:icmpcode]
         }
 
         connection
         firewall = ProfitBricks::Firewall.create(
-          config[:datacenter_id],
-          config[:server_id],
-          config[:nic_id],
+          Chef::Config[:knife][:datacenter_id],
+          Chef::Config[:knife][:server_id],
+          Chef::Config[:knife][:nic_id],
           params.compact
         )
 
         dot = ui.color('.', :magenta)
         firewall.wait_for { print dot; ready? }
-        firewall.reload
 
         puts "\n"
         puts "#{ui.color('ID', :cyan)}: #{firewall.id}"

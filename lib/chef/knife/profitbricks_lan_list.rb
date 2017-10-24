@@ -22,7 +22,7 @@ class Chef
         ]
         connection
 
-        ProfitBricks::LAN.list(config[:datacenter_id]).each do |lan|
+        ProfitBricks::LAN.list(Chef::Config[:knife][:datacenter_id]).each do |lan|
           lan_list << lan.id
           lan_list << lan.properties['name']
           lan_list << lan.properties['public'].to_s

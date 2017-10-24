@@ -16,17 +16,18 @@ class Chef
       option :server_id,
              short: '-S SERVER_ID',
              long: '--server-id SERVER_ID',
-             description: 'The ID of the server',
-             required: true
+             description: 'The ID of the server'
 
       option :nic_id,
              short: '-N NIC_ID',
              long: '--nic-id NIC_ID',
-             description: 'ID of the NIC',
-             required: true
+             description: 'ID of the NIC'
 
       def run
         $stdout.sync = true
+
+        validate_required_params(%i(datacenter_id server_id nic_id), Chef::Config[:knife])
+
         firewall_list = [
           ui.color('ID', :bold),
           ui.color('Name', :bold),
@@ -41,7 +42,7 @@ class Chef
         ]
         connection
 
-        ProfitBricks::Firewall.list(config[:datacenter_id], config[:server_id], config[:nic_id]).each do |firewall|
+        ProfitBricks::Firewall.list(Chef::Config[:knife][:datacenter_id], Chef::Config[:knife][:server_id], Chef::Config[:knife][:nic_id]).each do |firewall|
           firewall_list << firewall.id
           firewall_list << firewall.properties['name']
           firewall_list << firewall.properties['protocol'].to_s

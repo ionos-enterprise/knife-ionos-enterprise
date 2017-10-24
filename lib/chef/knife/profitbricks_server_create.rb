@@ -16,14 +16,12 @@ class Chef
       option :name,
              short: '-n NAME',
              long: '--name NAME',
-             description: 'Name of the server',
-             required: true
+             description: 'Name of the server'
 
       option :cores,
              short: '-C CORES',
              long: '--cores CORES',
-             description: 'The number of processor cores',
-             required: true
+             description: 'The number of processor cores'
 
       option :cpufamily,
              short: '-f CPU_FAMILY',
@@ -34,8 +32,7 @@ class Chef
       option :ram,
              short: '-r RAM',
              long: '--ram RAM',
-             description: 'The amount of RAM in MB',
-             required: true
+             description: 'The amount of RAM in MB'
 
       option :availabilityzone,
              short: '-a AVAILABILITY_ZONE',
@@ -53,27 +50,28 @@ class Chef
 
       def run
         $stdout.sync = true
+        validate_required_params(%i(datacenter_id name cores ram), Chef::Config[:knife])
 
         print "#{ui.color('Creating server...', :magenta)}"
         params = {
-          name: config[:name],
-          cores: config[:cores],
-          cpuFamily: config[:cpufamily],
-          ram: config[:ram],
-          availabilityZone: config[:availabilityzone]
+          name: Chef::Config[:knife][:name],
+          cores: Chef::Config[:knife][:cores],
+          cpuFamily: Chef::Config[:knife][:cpufamily],
+          ram: Chef::Config[:knife][:ram],
+          availabilityZone: Chef::Config[:knife][:availabilityzone]
         }
 
-        if config.key?(:bootcdrom)
-          params[:bootCdrom] = { id: config[:bootcdrom] }
+        if Chef::Config[:knife][:bootcdrom]
+          params[:bootCdrom] = { id: Chef::Config[:knife][:bootcdrom] }
         end
 
-        if config.key?(:bootvolume)
-          params[:bootVolume] = { id: config[:bootvolume] }
+        if Chef::Config[:knife][:bootvolume]
+          params[:bootVolume] = { id: Chef::Config[:knife][:bootvolume] }
         end
 
         connection
         server = ProfitBricks::Server.create(
-          config[:datacenter_id],
+          Chef::Config[:knife][:datacenter_id],
           params.compact
         )
 

@@ -16,22 +16,20 @@ class Chef
       option :server_id,
              short: '-S SERVER_ID',
              long: '--server-id SERVER_ID',
-             description: 'The ID of the server',
-             required: true
-
+             description: 'The ID of the server'
       option :nic_id,
              short: '-N NIC_ID',
              long: '--nic-id NIC_ID',
-             description: 'ID of the NIC',
-             required: true
+             description: 'ID of the NIC'
 
       def run
+        validate_required_params(%i(datacenter_id server_id nic_id), Chef::Config[:knife])
         connection
         @name_args.each do |firewall_id|
           begin
-            firewall = ProfitBricks::Firewall.get(config[:datacenter_id],
-                                                  config[:server_id],
-                                                  config[:nic_id],
+            firewall = ProfitBricks::Firewall.get(Chef::Config[:knife][:datacenter_id],
+                                                  Chef::Config[:knife][:server_id],
+                                                  Chef::Config[:knife][:nic_id],
                                                   firewall_id)
           rescue Excon::Errors::NotFound
             ui.error("Firewall ID #{firewall_id} not found. Skipping.")

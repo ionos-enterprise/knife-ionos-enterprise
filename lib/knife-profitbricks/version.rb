@@ -1,6 +1,6 @@
 module Knife
   module ProfitBricks
-    VERSION = '1.2.1'
+    VERSION = '2.0.0'
     MAJOR, MINOR, TINY = VERSION.split('.')
   end
 end

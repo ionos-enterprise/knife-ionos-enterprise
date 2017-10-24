@@ -16,14 +16,12 @@ class Chef
       option :name,
              short: '-n NAME',
              long: '--name NAME',
-             description: 'Name of the server',
-             required: true
+             description: '(required) Name of the server'
 
       option :cores,
              short: '-C CORES',
              long: '--cores CORES',
-             description: 'The number of processor cores',
-             required: true
+             description: '(required) The number of processor cores'
 
       option :cpufamily,
              short: '-f CPU_FAMILY',
@@ -34,8 +32,7 @@ class Chef
       option :ram,
              short: '-r RAM',
              long: '--ram RAM',
-             description: 'The amount of RAM in MB',
-             required: true
+             description: '(required) The amount of RAM in MB'
 
       option :availabilityzone,
              short: '-a AVAILABILITY_ZONE',
@@ -50,8 +47,7 @@ class Chef
       option :size,
              short: '-S SIZE',
              long: '--size SIZE',
-             description: 'The size of the volume in GB',
-             required: true
+             description: '(required) The size of the volume in GB'
 
       option :bus,
              short: '-b BUS',
@@ -61,18 +57,21 @@ class Chef
       option :image,
              short: '-N ID',
              long: '--image ID',
-             description: 'The image or snapshot ID'
+             description: '(required) The image or snapshot ID'
+
+      option :imagealias,
+             long: '--image-alias IMAGE_ALIAS',
+             description: '(required) The image alias'
 
       option :type,
              short: '-t TYPE',
              long: '--type TYPE',
-             description: 'The disk type (HDD or SSD)',
-             required: true
+             description: '(required) The disk type (HDD or SSD)'
 
       option :licencetype,
              short: '-l LICENCE',
              long: '--licence-type LICENCE',
-             description: 'The licence type of the volume (LINUX, WINDOWS, UNKNOWN, OTHER)'
+             description: 'The licence type of the volume (LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER)'
 
       option :imagepassword,
              short: '-P PASSWORD',
@@ -82,8 +81,7 @@ class Chef
       option :volume_availability_zone,
              short: '-Z AVAILABILITY_ZONE',
              long: '--volume-availability-zone AVAILABILITY_ZONE',
-             description: 'The volume availability zone of the server',
-             required: false
+             description: 'The volume availability zone of the server'
 
       option :sshkeys,
              short: '-K SSHKEY[,SSHKEY,...]',
@@ -106,74 +104,90 @@ class Chef
              long: '--dhcp',
              boolean: true | false,
              default: true,
-             description: 'Set to false if you wish to disable DHCP'
+             description: '(required) Set to false if you wish to disable DHCP'
 
       option :lan,
              short: '-L ID',
              long: '--lan ID',
-             description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created',
-             required: true
+             description: 'The LAN ID the NIC will reside on; if the LAN ID does not exist it will be created'
 
       option :nat,
              long: '--nat',
-             description: 'Set to enable NAT on the NIC',
-             required: false
+             description: 'Set to enable NAT on the NIC'
 
       def run
         $stdout.sync = true
 
-        print "#{ui.color('Creating composite server...', :magenta)}"
-        volume_params = {
-          name: config[:volumename],
-          size: config[:size],
-          bus: config[:bus] || 'VIRTIO',
-          image: config[:image],
-          type: config[:type],
-          licenceType: config[:licencetype]
-        }
+        validate_required_params(%i[datacenter_id name cores ram size type dhcp lan], Chef::Config[:knife])
 
-        if config[:sshkeys]
-          volume_params[:sshKeys] = config[:sshkeys]
+        if !Chef::Config[:knife][:image] && !Chef::Config[:knife][:imagealias]
+          ui.error("Either '--image' or '--image-alias' parameter must be provided")
+          exit(1)
         end
 
-        if config[:imagepassword]
-          volume_params[:imagePassword] = config[:imagepassword]
+        if !Chef::Config[:knife][:sshkeys] && !Chef::Config[:knife][:imagepassword]
+          ui.error("Either '--image-password' or '--ssh-keys' parameter must be provided")
+          exit(1)
+        end
+
+        print ui.color('Creating composite server...', :magenta).to_s
+        volume_params = {
+          name: Chef::Config[:knife][:volumename],
+          size: Chef::Config[:knife][:size],
+          bus: Chef::Config[:knife][:bus] || 'VIRTIO',
+          image: Chef::Config[:knife][:image],
+          type: Chef::Config[:knife][:type],
+          licenceType: Chef::Config[:knife][:licencetype]
+        }
+
+        if Chef::Config[:knife][:image]
+          volume_params['image'] = Chef::Config[:knife][:image]
+        end
+
+        if Chef::Config[:knife][:imagealias]
+          volume_params['imageAlias'] = Chef::Config[:knife][:imagealias]
+        end
+
+        if Chef::Config[:knife][:sshkeys]
+          volume_params[:sshKeys] = Chef::Config[:knife][:sshkeys]
+        end
+
+        if Chef::Config[:knife][:imagepassword]
+          volume_params[:imagePassword] = Chef::Config[:knife][:imagepassword]
         end
 
         if config[:volume_availability_zone]
-          volume_params[:availabilityZone] = config[:volume_availability_zone]
+          volume_params[:availabilityZone] = Chef::Config[:knife][:volume_availability_zone]
         end
 
         nic_params = {
-          name: config[:nicname],
-          ips: config[:ips],
-          dhcp: config[:dhcp],
-          lan: config[:lan]
+          name: Chef::Config[:knife][:nicname],
+          ips: Chef::Config[:knife][:ips],
+          dhcp: Chef::Config[:knife][:dhcp],
+          lan: Chef::Config[:knife][:lan]
         }
 
-        if config[:nat]
-          nic_params[:nat] = config[:nat]
-        end
+        nic_params[:nat] = Chef::Config[:knife][:nat] if config[:nat]
 
         params = {
-          name: config[:name],
-          cores: config[:cores],
-          cpuFamily: config[:cpufamily],
-          ram: config[:ram],
-          availabilityZone: config[:availabilityzone],
+          name: Chef::Config[:knife][:name],
+          cores: Chef::Config[:knife][:cores],
+          cpuFamily: Chef::Config[:knife][:cpufamily],
+          ram: Chef::Config[:knife][:ram],
+          availabilityZone: Chef::Config[:knife][:availabilityzone],
           volumes: [volume_params],
           nics: [nic_params]
         }
 
         connection
+
         server = ProfitBricks::Server.create(
-          config[:datacenter_id],
+          Chef::Config[:knife][:datacenter_id],
           params.compact
         )
 
         dot = ui.color('.', :magenta)
         server.wait_for(300) { print dot; ready? }
-        server.reload
 
         puts "\n"
         puts "#{ui.color('ID', :cyan)}: #{server.id}"

@@ -17,7 +17,7 @@ class Chef
         connection
         @name_args.each do |volume_id|
           begin
-            volume = ProfitBricks::Volume.get(config[:datacenter_id], volume_id)
+            volume = ProfitBricks::Volume.get(Chef::Config[:knife][:datacenter_id], volume_id)
           rescue Excon::Errors::NotFound
             ui.error("Volume ID #{volume_id} not found. Skipping.")
             next
