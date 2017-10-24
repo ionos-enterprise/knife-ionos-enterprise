@@ -1,4 +1,5 @@
 require 'chef/knife'
+require 'knife-profitbricks/version'
 
 class Chef
   class Knife
@@ -36,6 +37,8 @@ class Chef
           config.url = Chef::Config[:knife][:profitbricks_url]
           config.debug = Chef::Config[:knife][:profitbricks_debug] || false
           config.global_classes = false
+          config.headers = Hash.new
+          config.headers['User-Agent'] = "Chef/#{::Chef::VERSION} knife-profitbricks/#{::Knife::ProfitBricks::VERSION}"
         end
       end
 
@@ -63,7 +66,7 @@ class Chef
             min_image = image
           end
         end
-          min_image
+        min_image
       end
     end
   end
