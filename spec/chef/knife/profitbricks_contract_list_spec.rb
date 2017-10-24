@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'profitbricks_contract_show'
+require 'profitbricks_contract_list'
 
-Chef::Knife::ProfitbricksContractShow.load_deps
+Chef::Knife::ProfitbricksContractList.load_deps
 
-describe Chef::Knife::ProfitbricksContractShow do
-  let(:contract_list) { Chef::Knife::ProfitbricksContractShow.new }
+describe Chef::Knife::ProfitbricksContractList do
+  let(:contract_list) { Chef::Knife::ProfitbricksContractList.new }
 
   before :each do
     allow(contract_list).to receive(:puts)
