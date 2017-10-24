@@ -403,7 +403,7 @@ Remove IP Failover from LAN
 
 Lists information about available contract resources
 
-    knife profitbricks contract show
+    knife profitbricks contract list
 
 ## Support
 

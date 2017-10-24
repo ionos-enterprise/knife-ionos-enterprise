@@ -2,10 +2,10 @@ require 'chef/knife/profitbricks_base'
 
 class Chef
   class Knife
-    class ProfitbricksContractShow < Knife
+    class ProfitbricksContractList < Knife
       include Knife::ProfitbricksBase
 
-      banner 'knife profitbricks contract show'
+      banner 'knife profitbricks contract list'
 
       def run
         $stdout.sync = true
