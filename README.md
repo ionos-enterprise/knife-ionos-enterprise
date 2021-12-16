@@ -1,3 +1,8 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+# DEPRECATED
+
+This is no longer supported, please consider using [IONOS Cloud Knife](https://github.com/ionos-cloud/knife-ionos-cloud) instead.
+
 # ProfitBricks Chef Knife Plugin
 
 ## Table of Contents
